@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MZ AI - Muhammad Zain | Free AI Chat & Image Generator</title>
+<meta name="description" content="MZ AI by Muhammad Zain - Free AI Chatbot and AI Image Generator. Ask any question, generate any picture.">
+<meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXX">
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f5f7fa;color:#111}
+header{background:#0a0a0a;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center}
+header a{color:white;text-decoration:none;margin:0 8px;font-size:14px}
+.logo{font-weight:900;font-size:22px;color:#00e676} .logo span{color:white}
+.hero{background:linear-gradient(135deg,#000,#1a3a2a);color:white;text-align:center;padding:50px 15px}
+.hero h1{font-size:32px;margin:5px} .hero p{opacity:.8}
+.container{max-width:900px;margin:auto;padding:15px}
+.card{background:white;padding:20px;border-radius:16px;margin:15px 0;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+input,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:8px 0}
+button{background:#00c853;color:white;border:none;padding:13px;border-radius:10px;font-weight:bold;width:100%;cursor:pointer}
+button.sec{background:#111}
+#chatRes{white-space:pre-wrap;background:#f1f1f1;padding:12px;border-radius:10px;min-height:80px}
+img{width:100%;border-radius:14px;margin-top:10px}
+.ads{background:#fff3cd;border:1px dashed #999;text-align:center;padding:20px;border-radius:12px;margin:15px 0;color:#666}
+footer{background:#111;color:#ccc;text-align:center;padding:25px;font-size:13px;line-height:1.8}
+footer a{color:#00e676}
+#cookie{position:fixed;bottom:0;left:0;right:0;background:#111;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;z-index:999}
+#authModal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1000}
+.modalBox{background:white;padding:25px;border-radius:16px;width:90%;max-width:380px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">MZ <span>AI</span></div>
+<nav>
+<a href="#home">Home</a><a href="#about">About</a><a href="#privacy">Privacy</a><a href="#contact">Contact</a>
+<a href="#" onclick="openAuth()">Login</a>
+</nav>
+</header>
+
+<div class="hero" id="home">
+<h1>Welcome to MZ AI</h1>
+<p>By Muhammad Zain - Har Sawal Ka Jawab, Har Picture Free Me</p>
+<p id="welcomeUser"></p>
+<button onclick="openAuth()" style="max-width:250px">Login / Signup Free</button>
+</div>
+
+<div class="container">
+<div class="ads">ADVERTISEMENT - Google AdSense Ad Will Show Here</div>
+
+<div class="card">
+<h2>💬 AI Chatbot</h2>
+<textarea id="q" rows="3" placeholder="Apna sawal likhein..."></textarea>
+<button onclick="askAI()">Jawab Hasil Karein</button>
+<div id="chatRes" style="margin-top:10px">Jawab yahan aayega...</div>
+</div>
+
+<div class="card">
+<h2>🎨 AI Image Generator</h2>
+<input id="imgP" placeholder="Kaisi picture chahiye? Example: Beautiful sunset in Karachi">
+<button onclick="makeImg()">Picture Banao</button>
+<img id="outImg" class="hidden">
+</div>
+
+<div class="ads">ADVERTISEMENT - Google AdSense Ad Will Show Here</div>
+
+<div class="card" id="about">
+<h2>About Us - Muhammad Zain</h2>
+<p>Assalam-o-Alaikum! Mera naam <b>Muhammad Zain</b> hai. Maine MZ AI is liye banaya hai taake Pakistan me har banda free me AI use kar sake. Yahan aap koi bhi sawal pooch sakte hain aur koi bhi picture bana sakte hain, bilkul free.</p>
+<p>Contact: <b>8bpahg321@gmail.com</b></p>
+</div>
+
+<div class="card" id="privacy">
+<h2>Privacy Policy</h2>
+<p>Hum aapki privacy ka khayal rakhte hain. Hum aapka password save nahi karte, sirf aapka naam browser me save hota hai (LocalStorage). Hum cookies use karte hain taake website behtar chale aur Google AdSense ads dikha sake. Aap kabhi bhi cookies ko reject kar sakte hain.</p>
+</div>
+
+<div class="card">
+<h2>Terms & Conditions</h2>
+<p>Is website ko istemal karke aap is baat se agree karte hain ke aap isko galat kaam ke liye use nahi karenge. AI se bani pictures aap apne personal kaam ke liye use kar sakte hain.</p>
+</div>
+
+<div class="card" id="contact">
+<h2>Contact Us</h2>
+<p>Naam: Muhammad Zain<br>Email: 8bpahg321@gmail.com<br>Agar koi masla ho to email karein, 24 ghante me jawab milega.</p>
+<form onsubmit="alert('Shukriya! Aapka message mil gaya.');return false">
+<input placeholder="Aapka Naam" required>
+<input placeholder="Aapka Email" required>
+<textarea placeholder="Message" required></textarea>
+<button type="submit">Send Message</button>
+</form>
+</div>
+</div>
+
+<footer>
+<a href="#about">About Us</a> | 
+<a href="#privacy">Privacy Policy</a> | 
+<a href="#contact">Contact Us</a> | 
+<a href="#terms">Terms</a>
+<br><br>
+© 2026 MZ AI. All Rights Reserved.
+</footer>
+
+<div id="cookie">
+<span>🍪 Hum cookies use karte hain taake aapko behtar experience mile. <a href="#privacy" style="color:#00e676">Learn More</a></span>
+<button onclick="acceptCookie()" style="width:auto;padding:8px 20px">Accept</button>
+</div>
+
+<div id="authModal">
+<div class="modalBox">
+<h2 id="authTitle">Login / Signup</h2>
+<input id="userName" placeholder="Apna Naam Likhein">
+<input id="userEmail" placeholder="Email - 8bpahg321@gmail.com jaisa">
+<input id="userPass" type="password" placeholder="Password">
+<button onclick="doLogin()">Continue</button>
+<button class="sec" onclick="closeAuth()">Close</button>
+<p style="font-size:12px;color:#666">Signup karte hi aapka account isi mobile me save ho jayega.</p>
+</div>
+</div>
+
+<script>
+function askAI(){
+  let q=document.getElementById('q').value;
+  if(!q) return alert('Pehle sawal likhein');
+  document.getElementById('chatRes').innerText='Sooch raha hun...';
+  fetch('https://text.pollinations.ai/'+encodeURIComponent(q)).then(r=>r.text()).then(t=>{document.getElementById('chatRes').innerText=t});
+}
+function makeImg(){
+  let p=document.getElementById('imgP').value;
+  if(!p) return alert('Pehle picture ka naam likhein');
+  let img=document.getElementById('outImg');
+  img.classList.remove('hidden');
+  img.src='https://image.pollinations.ai/prompt/'+encodeURIComponent(p)+'?width=1024&height=1024&seed='+Math.floor(Math.random()*99999);
+}
+function openAuth(){document.getElementById('authModal').style.display='flex'}
+function closeAuth(){document.getElementById('authModal').style.display='none'}
+function doLogin(){
+  let n=document.getElementById('userName').value, e=document.getElementById('userEmail').value;
+  if(!n||!e) return alert('Naam aur Email zaroori hai');
+  localStorage.setItem('mz_user',n); localStorage.setItem('mz_email',e);
+  document.getElementById('welcomeUser').innerText='Assalam-o-Alaikum, '+n+'! Aap login ho gaye.';
+  closeAuth(); alert('Welcome '+n+'! Aap login ho gaye.');
+}
+function acceptCookie(){document.getElementById('cookie').style.display='none'; localStorage.setItem('mz_cookie','yes')}
+if(localStorage.getItem('mz_cookie')=='yes') document.getElementById('cookie').style.display='none';
+if(localStorage.getItem('mz_user')) document.getElementById('welcomeUser').innerText='Assalam-o-Alaikum, '+localStorage.getItem('mz_user')+'! Welcome Back.';
+</script>
+</body>
+</html>

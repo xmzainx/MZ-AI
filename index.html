@@ -43,7 +43,6 @@ footer a{color:#00e676;text-decoration:none;margin:0 8px;cursor:pointer}
 </nav>
 </header>
 
-<!-- HOME PAGE -->
 <div id="page-home" class="page active">
 <div class="hero">
 <h1>Free AI Chat & Image Generator</h1>
@@ -64,11 +63,11 @@ footer a{color:#00e676;text-decoration:none;margin:0 8px;cursor:pointer}
 <button onclick="makeImg()">Generate Image</button>
 <img id="outImg" class="hidden">
 <p id="imgNote" style="font-size:12px;color:#666"></p>
+<button id="dlBtn" class="hidden" onclick="downloadImg()" style="background:#111;margin-top:10px">Download Image</button>
 </div>
 </div>
 </div>
 
-<!-- ABOUT PAGE -->
 <div id="page-about" class="page">
 <div class="container"><div class="card">
 <h1>About Us</h1>
@@ -78,7 +77,6 @@ footer a{color:#00e676;text-decoration:none;margin:0 8px;cursor:pointer}
 </div></div>
 </div>
 
-<!-- PRIVACY PAGE -->
 <div id="page-privacy" class="page">
 <div class="container"><div class="card">
 <h1>Privacy Policy</h1>
@@ -93,7 +91,6 @@ footer a{color:#00e676;text-decoration:none;margin:0 8px;cursor:pointer}
 </div></div>
 </div>
 
-<!-- TERMS PAGE -->
 <div id="page-terms" class="page">
 <div class="container"><div class="card">
 <h1>Terms & Conditions</h1>
@@ -103,7 +100,6 @@ footer a{color:#00e676;text-decoration:none;margin:0 8px;cursor:pointer}
 </div></div>
 </div>
 
-<!-- CONTACT PAGE -->
 <div id="page-contact" class="page">
 <div class="container"><div class="card">
 <h1>Contact Us</h1>
@@ -123,8 +119,7 @@ footer a{color:#00e676;text-decoration:none;margin:0 8px;cursor:pointer}
 <a onclick="showPage('privacy')">Privacy Policy</a> |
 <a onclick="showPage('terms')">Terms</a> |
 <a onclick="showPage('contact')">Contact Us</a>
-<br>
-© 2026 MZ AI. All Rights Reserved.
+<br>© 2026 MZ AI. All Rights Reserved.
 </footer>
 
 <div id="cookie">
@@ -160,28 +155,20 @@ async function askAI(){
     document.getElementById('chatRes').innerText=t;
   }catch(e){ document.getElementById('chatRes').innerText='Error. Please try again.'; }
 }
+
+// NEW IMAGE SYSTEM - 3 SERVERS, NO LOGIN
+let currentPrompt = "";
+let tryCount = 0;
 function makeImg(){
-  let p=document.getElementById('imgP').value;
+  let p=document.getElementById('imgP').value.trim();
   if(!p) return alert('Please describe your image first');
+  currentPrompt = p; tryCount = 0;
   let img=document.getElementById('outImg');
   img.classList.remove('hidden');
-  document.getElementById('imgNote').innerText='Generating... Please wait 10-15 seconds.';
-  // No login, no API key needed - Free generation
-  img.src='https://gen.pollinations.ai/image/'+encodeURIComponent(p)+'?width=1024&height=1024&seed='+Math.floor(Math.random()*99999)+'&nologo=true';
-  img.onload=()=>{ document.getElementById('imgNote').innerText='Image generated successfully!'; }
+  document.getElementById('dlBtn').classList.add('hidden');
+  document.getElementById('imgNote').innerText='Generating... Trying Server 1...';
+  loadImageServer();
 }
-function openAuth(){document.getElementById('authModal').style.display='flex'}
-function closeAuth(){document.getElementById('authModal').style.display='none'}
-function doLogin(){
-  let n=document.getElementById('userName').value, e=document.getElementById('userEmail').value;
-  if(!n||!e) return alert('Name and Email are required');
-  localStorage.setItem('mz_user',n); localStorage.setItem('mz_email',e);
-  document.getElementById('welcomeUser').innerText='Welcome, '+n+'! You are logged in.';
-  closeAuth(); alert('Welcome '+n+'! You are logged in.');
-}
-function acceptCookie(){document.getElementById('cookie').style.display='none'; localStorage.setItem('mz_cookie','yes')}
-if(localStorage.getItem('mz_cookie')=='yes') document.getElementById('cookie').style.display='none';
-if(localStorage.getItem('mz_user')) document.getElementById('welcomeUser').innerText='Welcome Back, '+localStorage.getItem('mz_user')+'!';
-</script>
-</body>
-</html>
+function loadImageServer(){
+  let img=document.getElementById('outImg');
+  let seed=Math.floor(Math.random

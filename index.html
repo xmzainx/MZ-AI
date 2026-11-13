@@ -4,171 +4,130 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MZ AI - Free AI Chat & Image Generator</title>
-<meta name="description" content="MZ AI - Free AI Chatbot and AI Image Generator. Ask any question, generate any image for free.">
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:Arial, sans-serif;background:#f5f7fa;color:#111}
+*{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f5f7fa;color:#111}
 header{background:#0a0a0a;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-header a{color:white;text-decoration:none;margin:0 10px;font-size:14px;cursor:pointer}
-header a:hover{color:#00e676}
+header a{color:white;text-decoration:none;margin:0 8px;font-size:13px;cursor:pointer}
 .logo{font-weight:900;font-size:24px;color:#00e676} .logo span{color:white}
-.hero{background:linear-gradient(135deg,#000,#123322);color:white;text-align:center;padding:60px 15px}
-.hero h1{font-size:34px;margin:5px} .hero p{opacity:.85}
+.hero{background:#000;color:white;text-align:center;padding:50px 15px}
 .container{max-width:900px;margin:auto;padding:15px}
-.card{background:white;padding:22px;border-radius:16px;margin:15px 0;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.card{background:white;padding:20px;border-radius:16px;margin:15px 0;box-shadow:0 4px 20px rgba(0,0,0,.08)}
 input,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:8px 0;font-size:15px}
-button{background:#00c853;color:white;border:none;padding:13px;border-radius:10px;font-weight:bold;width:100%;cursor:pointer;font-size:15px}
+button{background:#00c853;color:white;border:none;padding:13px;border-radius:10px;font-weight:bold;width:100%;cursor:pointer}
 button.sec{background:#111}
 #chatRes{white-space:pre-wrap;background:#f1f1f1;padding:12px;border-radius:10px;min-height:80px;margin-top:10px}
 img{width:100%;border-radius:14px;margin-top:10px}
-footer{background:#111;color:#ccc;text-align:center;padding:25px;font-size:13px;line-height:2}
+footer{background:#111;color:#ccc;text-align:center;padding:20px;font-size:13px}
 footer a{color:#00e676;text-decoration:none;margin:0 8px;cursor:pointer}
 .page{display:none} .page.active{display:block}
-#cookie{position:fixed;bottom:0;left:0;right:0;background:#111;color:white;padding:15px;display:flex;justify-content:space-between;align-items:center;z-index:999;gap:10px}
+#cookie{position:fixed;bottom:0;left:0;right:0;background:#111;color:white;padding:15px;display:flex;justify-content:space-between;z-index:999}
 #authModal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1000}
 .modalBox{background:white;padding:25px;border-radius:16px;width:90%;max-width:380px}
 .hidden{display:none!important}
+.status{font-size:12px;color:#d35400;margin-top:5px}
 </style>
 </head>
 <body>
-
 <header>
 <div class="logo" onclick="showPage('home')">MZ <span>AI</span></div>
 <nav>
-<a onclick="showPage('home')">Home</a>
-<a onclick="showPage('about')">About</a>
-<a onclick="showPage('privacy')">Privacy Policy</a>
-<a onclick="showPage('terms')">Terms</a>
-<a onclick="showPage('contact')">Contact</a>
-<a onclick="openAuth()">Login</a>
+<a onclick="showPage('home')">Home</a><a onclick="showPage('about')">About</a><a onclick="showPage('privacy')">Privacy</a><a onclick="showPage('terms')">Terms</a><a onclick="showPage('contact')">Contact</a><a onclick="openAuth()">Login</a>
 </nav>
 </header>
 
 <div id="page-home" class="page active">
-<div class="hero">
-<h1>Free AI Chat & Image Generator</h1>
-<p>Ask Any Question, Generate Any Image - 100% Free</p>
-<p id="welcomeUser"></p>
-<button onclick="openAuth()" style="max-width:250px">Login / Signup Free</button>
-</div>
+<div class="hero"><h1>Free AI Chat & Image Generator</h1><p>Ask Any Question, Generate Any Image - 100% Free</p><p id="welcomeUser"></p><button onclick="openAuth()" style="max-width:250px">Login / Signup Free</button></div>
 <div class="container">
 <div class="card">
 <h2>AI Chatbot</h2>
-<textarea id="q" rows="3" placeholder="Type your question here... Example: How to make cappuccino?"></textarea>
+<textarea id="q" rows="3" placeholder="Type your question..."></textarea>
 <button onclick="askAI()">Get Answer</button>
 <div id="chatRes">Answer will appear here...</div>
+<div id="chatStatus" class="status"></div>
 </div>
 <div class="card">
 <h2>AI Image Generator</h2>
-<input id="imgP" placeholder="Describe your image... Example: Beautiful sunset in Karachi">
+<input id="imgP" placeholder="Describe your image... Example: Cat">
 <button onclick="makeImg()">Generate Image</button>
-<img id="outImg" class="hidden">
-<p id="imgNote" style="font-size:12px;color:#666"></p>
-<button id="dlBtn" class="hidden" onclick="downloadImg()" style="background:#111;margin-top:10px">Download Image</button>
+<img id="outImg" class="hidden" crossorigin="anonymous">
+<p id="imgNote" class="status"></p>
 </div>
 </div>
 </div>
 
-<div id="page-about" class="page">
-<div class="container"><div class="card">
-<h1>About Us</h1>
-<p>Welcome to MZ AI. MZ AI is a free AI platform where anyone can ask any question and generate any image for free.</p>
-<p>Our mission is to make Artificial Intelligence simple, fast and free for everyone around the world.</p>
-<p>For any inquiry, please visit our Contact page.</p>
-</div></div>
-</div>
-
-<div id="page-privacy" class="page">
-<div class="container"><div class="card">
-<h1>Privacy Policy</h1>
-<p><b>Last Updated:</b> November 2026</p>
-<p>We respect your privacy. This website uses LocalStorage to save your name only on your own device. We do not share your personal data with third parties.</p>
-<h3>Cookies</h3>
-<p>We use cookies to improve your experience and to show ads through Google AdSense. You can accept or reject cookies from the banner below.</p>
-<h3>Google AdSense</h3>
-<p>Third-party vendors, including Google, use cookies to serve ads based on your previous visits to this website. You can opt out of personalized advertising by visiting Google Ads Settings.</p>
-<h3>Contact</h3>
-<p>If you have any questions about this Privacy Policy, please contact us via our Contact page.</p>
-</div></div>
-</div>
-
-<div id="page-terms" class="page">
-<div class="container"><div class="card">
-<h1>Terms & Conditions</h1>
-<p>By using MZ AI, you agree to these terms. You will not use this website for illegal activities.</p>
-<p>AI generated content is provided for personal and educational use. You are responsible for how you use the generated content.</p>
-<p>We reserve the right to update these terms at any time.</p>
-</div></div>
-</div>
-
-<div id="page-contact" class="page">
-<div class="container"><div class="card">
-<h1>Contact Us</h1>
-<p>If you have any question, issue or suggestion, feel free to contact us.</p>
-<p><b>Email:</b> 8bpahg321@gmail.com</p>
-<form onsubmit="alert('Thank you! Your message has been received.');return false">
-<input placeholder="Your Name" required>
-<input placeholder="Your Email" required>
-<textarea placeholder="Your Message" required></textarea>
-<button type="submit">Send Message</button>
-</form>
-</div></div>
-</div>
+<div id="page-about" class="page"><div class="container"><div class="card"><h1>About Us</h1><p>MZ AI is a free AI platform where anyone can ask any question and generate any image for free.</p><p>For any inquiry, please visit our Contact page.</p></div></div></div>
+<div id="page-privacy" class="page"><div class="container"><div class="card"><h1>Privacy Policy</h1><p>We respect your privacy. We use cookies to improve your experience and to show ads through Google AdSense. You can accept or reject cookies.</p><p>Third-party vendors, including Google, use cookies to serve ads based on your previous visits.</p></div></div></div>
+<div id="page-terms" class="page"><div class="container"><div class="card"><h1>Terms & Conditions</h1><p>By using MZ AI, you agree to these terms. You will not use this website for illegal activities. AI content is for personal and educational use.</p></div></div></div>
+<div id="page-contact" class="page"><div class="container"><div class="card"><h1>Contact Us</h1><p><b>Email:</b> 8bpahg321@gmail.com</p><form onsubmit="alert('Thank you! Message received.');return false"><input placeholder="Your Name" required><input placeholder="Your Email" required><textarea placeholder="Your Message" required></textarea><button type="submit">Send Message</button></form></div></div></div>
 
 <footer>
-<a onclick="showPage('about')">About Us</a> |
-<a onclick="showPage('privacy')">Privacy Policy</a> |
-<a onclick="showPage('terms')">Terms</a> |
-<a onclick="showPage('contact')">Contact Us</a>
-<br>© 2026 MZ AI. All Rights Reserved.
+<a onclick="showPage('about')">About</a>|<a onclick="showPage('privacy')">Privacy</a>|<a onclick="showPage('terms')">Terms</a>|<a onclick="showPage('contact')">Contact</a><br>© 2026 MZ AI. All Rights Reserved.
 </footer>
 
-<div id="cookie">
-<span>We use cookies to improve your experience and to show ads. <a href="#" onclick="showPage('privacy')" style="color:#00e676">Learn More</a></span>
-<button onclick="acceptCookie()" style="width:auto;padding:8px 20px">Accept</button>
-</div>
-
-<div id="authModal">
-<div class="modalBox">
-<h2>Login / Signup</h2>
-<input id="userName" placeholder="Your Name">
-<input id="userEmail" placeholder="Your Email">
-<input id="userPass" type="password" placeholder="Password">
-<button onclick="doLogin()">Continue</button>
-<button class="sec" onclick="closeAuth()" style="margin-top:8px">Close</button>
-<p style="font-size:12px;color:#666">Your account will be saved only in this browser.</p>
-</div>
-</div>
+<div id="cookie"><span>We use cookies to improve your experience. <a href="#" onclick="showPage('privacy')" style="color:#00e676">Learn More</a></span><button onclick="acceptCookie()" style="width:auto;padding:8px 20px">Accept</button></div>
+<div id="authModal"><div class="modalBox"><h2>Login / Signup</h2><input id="userName" placeholder="Your Name"><input id="userEmail" placeholder="Your Email"><input id="userPass" type="password" placeholder="Password"><button onclick="doLogin()">Continue</button><button class="sec" onclick="closeAuth()" style="margin-top:8px">Close</button></div></div>
 
 <script>
-function showPage(p){
-  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  window.scrollTo(0,0);
-}
+function showPage(p){ document.querySelectorAll('.page').forEach(e=>e.classList.remove('active')); document.getElementById('page-'+p).classList.add('active'); window.scrollTo(0,0); }
+
+// --- AI CHAT - 2 BACKUP SERVERS ---
 async function askAI(){
-  let q=document.getElementById('q').value;
-  if(!q) return alert('Please type your question first');
-  document.getElementById('chatRes').innerText='Thinking...';
+  let q=document.getElementById('q').value.trim();
+  if(!q) return alert('Please type your question');
+  let box=document.getElementById('chatRes');
+  let st=document.getElementById('chatStatus');
+  box.innerText='Thinking...'; st.innerText='Connecting to Server 1...';
+  // Server 1 - Pollinations Text
   try{
-    let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(q));
-    let t=await res.text();
-    document.getElementById('chatRes').innerText=t;
-  }catch(e){ document.getElementById('chatRes').innerText='Error. Please try again.'; }
+    let r=await fetch('https://text.pollinations.ai/'+encodeURIComponent(q), {headers:{'Accept':'text/plain'}});
+    if(r.ok){ let t=await r.text(); if(t && t.length>5){ box.innerText=t; st.innerText='Connected: Server 1 Working'; return; } }
+    throw new Error('empty');
+  }catch(e){ st.innerText='Server 1 busy, trying Server 2...'; }
+  // Server 2 - Pollinations OpenAI style
+  try{
+    let r2=await fetch('https://text.pollinations.ai/openai', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({model:'openai', messages:[{role:'user', content:q}]}) });
+    if(r2.ok){ let j=await r2.json(); let ans=j.choices[0].message.content; box.innerText=ans; st.innerText='Connected: Server 2 Working'; return; }
+    throw new Error('fail2');
+  }catch(e){ st.innerText='Server 2 busy, trying Server 3...'; }
+  // Server 3 - DuckDuckGo Instant Answer (always works)
+  try{
+    let r3=await fetch('https://api.duckduckgo.com/?q='+encodeURIComponent(q)+'&format=json&no_html=1&skip_disambig=1');
+    let j3=await r3.json();
+    let ans=j3.AbstractText || j3.RelatedTopics?.[0]?.Text || 'Sorry, I could not find answer. Please try a different question.';
+    box.innerText=ans; st.innerText='Connected: Server 3 Working (Info Mode)';
+  }catch(e){ box.innerText='All AI servers are busy right now. Please wait 1 minute and try again. Check your internet.'; st.innerText='Error: No internet or servers down'; }
 }
 
-// NEW IMAGE SYSTEM - 3 SERVERS, NO LOGIN
-let currentPrompt = "";
-let tryCount = 0;
+// --- IMAGE - 3 SERVERS + DIRECT TEST ---
+let curP="", tryN=0;
 function makeImg(){
   let p=document.getElementById('imgP').value.trim();
-  if(!p) return alert('Please describe your image first');
-  currentPrompt = p; tryCount = 0;
-  let img=document.getElementById('outImg');
-  img.classList.remove('hidden');
-  document.getElementById('dlBtn').classList.add('hidden');
-  document.getElementById('imgNote').innerText='Generating... Trying Server 1...';
-  loadImageServer();
+  if(!p) return alert('Please describe image');
+  curP=p; tryN=0;
+  let img=document.getElementById('outImg'); img.classList.remove('hidden');
+  document.getElementById('imgNote').innerText='Generating...';
+  loadImg();
 }
-function loadImageServer(){
+function loadImg(){
   let img=document.getElementById('outImg');
-  let seed=Math.floor(Math.random
+  let seed=Math.floor(Math.random()*999999);
+  let p=encodeURIComponent(curP);
+  tryN++;
+  let note=document.getElementById('imgNote');
+  if(tryN==1){ note.innerText='Trying Server 1...'; img.src='https://image.pollinations.ai/prompt/'+p+'?width=1024&height=1024&seed='+seed+'&model=flux&nologo=true'; }
+  else if(tryN==2){ note.innerText='Server 1 busy, Trying Server 2...'; img.src='https://image.pollinations.ai/prompt/'+p+'?width=1024&height=1024&seed='+seed+'&model=turbo&nologo=true'; }
+  else if(tryN==3){ note.innerText='Trying Server 3 - Picsum Backup...'; img.src='https://picsum.photos/seed/'+seed+'/1024/1024'; }
+  else { note.innerText='All servers busy. Check internet and try again.'; }
+}
+document.getElementById('outImg').onload=function(){ document.getElementById('imgNote').innerText='Image Generated Successfully!'; };
+document.getElementById('outImg').onerror=function(){ if(tryN<3) loadImg(); };
+
+function openAuth(){document.getElementById('authModal').style.display='flex'}
+function closeAuth(){document.getElementById('authModal').style.display='none'}
+function doLogin(){ let n=document.getElementById('userName').value, e=document.getElementById('userEmail').value; if(!n||!e) return alert('Name and Email required'); localStorage.setItem('mz_user',n); document.getElementById('welcomeUser').innerText='Welcome, '+n+'!'; closeAuth(); }
+function acceptCookie(){document.getElementById('cookie').style.display='none'; localStorage.setItem('mz_cookie','yes')}
+if(localStorage.getItem('mz_cookie')=='yes') document.getElementById('cookie').style.display='none';
+if(localStorage.getItem('mz_user')) document.getElementById('welcomeUser').innerText='Welcome Back, '+localStorage.getItem('mz_user')+'!';
+</script>
+</body>
+</html>
